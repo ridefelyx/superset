@@ -1,0 +1,22 @@
+sqlalchemy<2.0.0
+snowflake-connector-python<3.0.0
+
+[development]
+pytest<6.1.0
+pytest-cov
+pytest-rerunfailures
+pytest-timeout
+coverage
+pexpect
+mock
+pytz
+pytzdata
+Cython
+more-itertools
+numpy
+
+[development:python_version == "3.5"]
+pandas==0.24.2
+
+[development:python_version > "3.5"]
+pandas<1.1.0,>=1.0.0

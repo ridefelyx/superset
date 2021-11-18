@@ -1,0 +1,4 @@
+FROM apache/superset:latest-dev
+
+COPY --chown=superset snowflake-sqlalchemy-local snowflake-sqlalchemy-local
+COPY --chown=superset docker/docker-bootstrap.sh docker/docker-bootstrap.sh 

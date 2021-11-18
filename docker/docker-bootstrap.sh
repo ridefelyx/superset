@@ -36,6 +36,10 @@ else
   echo "Skipping local overrides"
 fi
 
+echo "Installing patched snowflake-sqlalchemy"
+pip install ./snowflake-sqlalchemy-local
+echo "Done!"
+
 if [[ "${1}" == "worker" ]]; then
   echo "Starting Celery worker..."
   celery --app=superset.tasks.celery_app:app worker -Ofair -l INFO
