@@ -111,39 +111,33 @@ extraVolumeMounts: []
 
 # A dictionary of overrides to append at the end of superset_config.py - the name does not matter
 # WARNING: the order is not guaranteed
-configOverrides: {}
-  #  extend_timeout: |
-  #    # Extend timeout to allow long running queries.
-  #    SUPERSET_WEBSERVER_TIMEOUT = ...
-  # enable_oauth: |
-  #   from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
-  #   AUTH_TYPE = AUTH_OAUTH
+configOverrides: 
+  my_override: |
+    FEATURE_FLAGS = {
+        "ENABLE_TEMPLATE_PROCESSING": True,
+    }
 
-  #   OAUTH_PROVIDERS = [
-  #       {
-  #           "name": "google",
-  #           "whitelist": [ os.getenv("OAUTH_WHITELIST_REGEX", "") ],
-  #           "icon": "fa-google",
-  #           "token_key": "access_token",
-  #           "remote_app": {
-  #               "client_id": os.environ.get("GOOGLE_KEY"),
-  #               "client_secret": os.environ.get("GOOGLE_SECRET"),
-  #               "api_base_url": "https://www.googleapis.com/oauth2/v2/",
-  #               "client_kwargs": {"scope": "email profile"},
-  #               "request_token_url": None,
-  #               "access_token_url": "https://accounts.google.com/o/oauth2/token",
-  #               "authorize_url": "https://accounts.google.com/o/oauth2/auth",
-  #               "authorize_params": {"hd": os.getenv("OAUTH_HOME_DOMAIN", "")}
-  #           }
-  #       }
-  #   ]
-  #   # Map Authlib roles to superset roles
-  #   AUTH_ROLE_ADMIN = 'Admin'
-  #   AUTH_ROLE_PUBLIC = 'Public'
-  #   # Will allow user self registration, allowing to create Flask users from Authorized User
-  #   AUTH_USER_REGISTRATION = True
-  #   # The default user self registration role
-  #   AUTH_USER_REGISTRATION_ROLE = "Admin"
+    MAPBOX_API_KEY = 'pk.eyJ1IjoibHR2ZGhhbSIsImEiOiJja3RuM3RkODAwd3d3MnZtajU1bzNoa2l3In0.UTBkKQd5TCMHwRzyP8n8BQ'
+
+    JINJA_CONTEXT_ADDONS = {
+      'time_grain_to_label': lambda time_grain, col: {"PT1S": f"DATE_TRUNC('SECOND', {col})",
+              "PT1M": f"DATE_TRUNC('MINUTE', {col})",
+              "PT5M": f"DATEADD(MINUTE, FLOOR(DATE_PART(MINUTE, {col}) / 5) * 5, \
+                      DATE_TRUNC('HOUR', {col}))",
+              "PT10M": f"DATEADD(MINUTE, FLOOR(DATE_PART(MINUTE, {col}) / 10) * 10, \
+                      DATE_TRUNC('HOUR', {col}))",
+              "PT15M": f"DATEADD(MINUTE, FLOOR(DATE_PART(MINUTE, {col}) / 15) * 15, \
+                      DATE_TRUNC('HOUR', {col}))",
+              "PT30M": f"DATEADD(MINUTE, FLOOR(DATE_PART(MINUTE, {col}) / 30) * 30, \
+                        DATE_TRUNC('HOUR', {col}))",
+              "PT1H": f"DATE_TRUNC('HOUR', {col})",
+              "P1D": f"DATE_TRUNC('DAY', {col})",
+              "P1W": f"DATE_TRUNC('WEEK', {col})",
+              "P1M": f"DATE_TRUNC('MONTH', {col})",
+              "P3M": f"DATE_TRUNC('QUARTER', {col})",
+              "P1Y": f"DATE_TRUNC('YEAR', {col})",
+          }.get(time_grain)
+    }
 
 configMountPath: "/app/pythonpath"
 
